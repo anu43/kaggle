@@ -1,2 +1,58 @@
 # Import libraries
 import pandas as pd
+
+
+def list_missing_features_fraction(df):
+    '''
+    Prints the list of missing values in a given dataframe by descended sorting
+
+    Parameters
+    ----------
+    df : Pandas DataFrame object
+        The given dataset.
+
+    Returns
+    -------
+    None.
+
+    '''
+    # Get the percentage of missing values for each column
+    missing_frac = 1 - df.count() / len(df)
+    return missing_frac[missing_frac > 0.0].sort_values(ascending=False)
+
+
+def get_columns_names_has_missing(df):
+    '''
+    Returns the list of columns where the column has missing values
+
+    Parameters
+    ----------
+    df : Pandas DataFrame object
+        The given dataset.
+
+    Returns
+    -------
+    list
+        The list of columns where the column has missing values.
+
+    '''
+    return df.columns[df.isnull().any()].tolist()
+
+
+def gen_info(df):
+    ''' Prints generic information about the given frame'''
+
+    # Describe frame
+    print(df.describe())
+
+    # Print column names
+    print(df.columns)
+
+    # Print column names which have missing values
+    print(get_columns_names_has_missing(df))
+
+    # Print frame length
+    print(len(df))
+
+    # Print missing feature fraction
+    print(list_missing_features_fraction(df))
