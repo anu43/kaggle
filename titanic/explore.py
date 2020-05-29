@@ -44,15 +44,29 @@ def gen_info(df):
 
     # Describe frame
     print(df.describe())
+    print('\n')
 
     # Print column names
     print(df.columns)
+    print('\n')
 
     # Print column names which have missing values
+    print('Columns which have missing values')
     print(get_columns_names_has_missing(df))
+    print('\n')
 
     # Print frame length
-    print(len(df))
+    print('Length of the frame:', len(df))
+    print('\n')
 
     # Print missing feature fraction
+    print('Percentage of the missing values regarding to related columns')
     print(list_missing_features_fraction(df))
+    print('\n')
+
+
+# Import frame
+df = pd.read_csv('../data/kaggle-Titanic/train.csv')
+
+# Print generic information about frame
+gen_info(df)
