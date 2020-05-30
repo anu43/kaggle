@@ -1,5 +1,6 @@
 # Import libraries
 import pandas as pd
+import numpy as np
 
 
 def list_missing_features_fraction(df):
@@ -73,3 +74,21 @@ df = pd.read_csv('../data/kaggle-Titanic/train.csv')
 
 # Print generic information about frame
 gen_info(df)
+
+# Change types of features
+# Fill NaN values as np.nan not to get error
+df.fillna(np.nan, inplace=True)
+# Set new types for certain features
+types = {
+        'PassengerId': 'category',
+        'Survived': 'bool',
+        'Pclass': 'category',
+        'Sex': 'category',
+        'SibSp': 'category',
+        'Parch': 'category',
+        'Ticket': 'category',
+        'Cabin': 'category',
+        'Embarked': 'category'
+    }
+# Apply new types
+df = df.astype(types)
