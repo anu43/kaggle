@@ -1,5 +1,7 @@
 # Import libraries
+from statsmodels.formula.api import ols
 import matplotlib.pyplot as plt
+import statsmodels.api as sm
 import seaborn as sn
 import pandas as pd
 import numpy as np
@@ -90,6 +92,31 @@ def draw_corr_matrix(df):
     # Show plot
     plt.show()
 
+
+def anova(df, f:str):
+    '''
+    Runs the ANOVA test.
+
+    Parameters
+    ----------
+    df : object
+        Pandas Frame.
+    f : str
+        Formula.
+
+    Returns
+    -------
+    table : object
+        ANOVA result table.
+
+    '''
+    # Create linear model
+    lm = ols(f, data=df).fit()
+    # Run ANOVA
+    table = sm.stats.anova_lm(lm, test='Chisq', typ=2)
+    #Return table
+    return table
+
 # Import frame
 df = pd.read_csv('../data/kaggle-Titanic/train.csv')
 
@@ -119,3 +146,10 @@ df.drop('Name', axis=1, inplace=True)
 
 # Draw correlation matrix
 draw_corr_matrix(df)
+
+# Run ANOVA-test
+# Define formula
+# f = 'Survived ~ PassengerId*Pclass*Sex*Age*\
+#    SibSp*Parch*Ticket*Fare*Cabin*Embarked'
+f = 'Age ~ Sex'
+table = anova(df, f)
