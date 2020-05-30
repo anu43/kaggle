@@ -49,6 +49,10 @@ def gen_info(df):
     # Print column names
     print(df.columns)
     print('\n')
+    
+    # Print dtypes
+    print(df.dtypes())
+    print('\n')
 
     # Print column names which have missing values
     print('Columns which have missing values')
