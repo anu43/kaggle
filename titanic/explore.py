@@ -62,7 +62,6 @@ def gen_info(df):
     # Print missing feature fraction
     print('Percentage of the missing values regarding to related columns')
     print(list_missing_features_fraction(df))
-    print('\n')
 
 
 # Import frame
