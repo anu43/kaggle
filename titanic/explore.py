@@ -142,6 +142,10 @@ def chi_test_with_all_categorical_features(df):
     return results
 
 
+def convert_categorical2Binary(df):
+    pass
+
+
 # Import frame
 df = pd.read_csv('../data/kaggle-Titanic/train.csv')
 
@@ -154,7 +158,7 @@ df.fillna(np.nan, inplace=True)
 # Set new types for certain features
 types = {
         'PassengerId': 'category',
-        'Survived': 'bool',
+        'Survived': 'int',
         'Pclass': 'category',
         'Sex': 'category',
         'SibSp': 'category',
@@ -175,6 +179,5 @@ draw_corr_matrix(df)
 # Run ANOVA-test
 # Define formula
 # f = 'Survived ~ PassengerId*Pclass*Sex*Age*\
-#    SibSp*Parch*Ticket*Fare*Cabin*Embarked'
-f = 'Age ~ Sex'
+#     SibSp*Parch*Ticket*Fare*Cabin*Embarked'
 table = anova(df, f)
