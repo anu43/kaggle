@@ -51,7 +51,7 @@ def gen_info(df):
     print('\n')
     
     # Print dtypes
-    print(df.dtypes())
+    print(df.dtypes)
     print('\n')
 
     # Print column names which have missing values
