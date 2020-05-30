@@ -92,3 +92,6 @@ types = {
     }
 # Apply new types
 df = df.astype(types)
+
+# Drop 'Name' feature
+df.drop('Name', axis=1, inplace=True)
