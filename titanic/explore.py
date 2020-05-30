@@ -1,4 +1,6 @@
 # Import libraries
+import matplotlib.pyplot as plt
+import seaborn as sn
 import pandas as pd
 import numpy as np
 
@@ -69,6 +71,25 @@ def gen_info(df):
     print(list_missing_features_fraction(df))
 
 
+def draw_corr_matrix(df):
+    '''
+    Draws a correlation matrix by using the giving frame
+
+    Parameters
+    ----------
+    df : Pandas Frame
+        Frame to be visualized its correlation.
+
+    Returns
+    -------
+    None.
+
+    '''
+    # Plot correlation matrix
+    sn.heatmap(df.corr(), annot=True)
+    # Show plot
+    plt.show()
+
 # Import frame
 df = pd.read_csv('../data/kaggle-Titanic/train.csv')
 
@@ -95,3 +116,6 @@ df = df.astype(types)
 
 # Drop 'Name' feature
 df.drop('Name', axis=1, inplace=True)
+
+# Draw correlation matrix
+draw_corr_matrix(df)
