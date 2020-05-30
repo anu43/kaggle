@@ -1,4 +1,5 @@
 # Import libraries
+from scipy.stats import chi2_contingency
 from statsmodels.formula.api import ols
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -116,6 +117,30 @@ def anova(df, f:str):
     table = sm.stats.anova_lm(lm, test='Chisq', typ=2)
     #Return table
     return table
+
+
+def chi_test_with_all_categorical_features(df):
+    
+    # Extract categorical features from frame
+    cat_columns = df.select_dtypes(include='category').columns
+    # Create an empty list for results
+    chi2_check = list()
+    # Check each categorical column with target feature
+    for col in cat_columns:
+        # If p value is less than 5%
+        if chi2_contingency(pd.crosstab(df['Survived'], df[col]))[1] < 0.05:
+            # Reject the null hypothesis
+            chi2_check.append('Reject Null Hypothesis')
+        # If not
+        else:
+            # Fail to reject
+            chi2_check.append('Fail to Reject Null Hypothesis')
+    # Set results
+    results = pd.DataFrame(data=[cat_columns, chi2_check]).T 
+    results.columns = ['Column', 'Hypothesis']
+    # Return results
+    return results
+
 
 # Import frame
 df = pd.read_csv('../data/kaggle-Titanic/train.csv')
