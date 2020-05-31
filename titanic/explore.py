@@ -55,7 +55,7 @@ def gen_info(df):
     # Print column names
     print(df.columns)
     print('\n')
-    
+
     # Print dtypes
     print(df.dtypes)
     print('\n')
@@ -94,7 +94,7 @@ def draw_corr_matrix(df):
     plt.show()
 
 
-def anova(df, f:str, test='F'):
+def anova(df, f: str, test='F'):
     '''
     Runs the ANOVA test.
 
@@ -117,12 +117,12 @@ def anova(df, f:str, test='F'):
     lm = ols(f, data=df).fit()
     # Run ANOVA
     table = sm.stats.anova_lm(lm, test=test, typ=2, robust='hc3')
-    #Return table
+    # Return table
     return table
 
 
 def chi_test_with_all_categorical_features(df):
-    
+
     # Extract categorical features from frame
     cat_columns = df.select_dtypes(include='category').columns
     # Create an empty list for results
@@ -138,7 +138,7 @@ def chi_test_with_all_categorical_features(df):
             # Fail to reject
             chi2_check.append('Fail to Reject Null Hypothesis')
     # Set results
-    results = pd.DataFrame(data=[cat_columns, chi2_check]).T 
+    results = pd.DataFrame(data=[cat_columns, chi2_check]).T
     results.columns = ['Column', 'Hypothesis']
     # Return results
     return results
@@ -148,17 +148,26 @@ def convert_categorical2Binary(df):
     pass
 
 
-# Import frame
-df = pd.read_csv('../data/kaggle-Titanic/train.csv')
+def process(df):
+    '''
+    Process giving frame for further analytical operations
 
-# Print generic information about frame
-gen_info(df)
+    Parameters
+    ----------
+    df : object
+        Pandas Frame.
 
-# Change types of features
-# Fill NaN values as np.nan not to get error
-df.fillna(np.nan, inplace=True)
-# Set new types for certain features
-types = {
+    Returns
+    -------
+    object
+        Pandas Frame.
+
+    '''
+    # Change types of features
+    # Fill NaN values as np.nan not to get error
+    df.fillna(np.nan, inplace=True)
+    # Set new types for certain features
+    types = {
         'PassengerId': 'category',
         'Survived': 'int8',
         'Pclass': 'category',
@@ -169,11 +178,24 @@ types = {
         'Cabin': 'category',
         'Embarked': 'category'
     }
-# Apply new types
-df = df.astype(types)
+    # Apply new types
+    df = df.astype(types)
 
-# Drop 'Name' feature
-df.drop('Name', axis=1, inplace=True)
+    # Drop 'Name' feature
+    df2 = df.drop(['Name', 'Embarked'], axis=1)
+
+    # Return df2 by dropping NaN rows
+    return df2.dropna()
+
+
+# Import frame
+df = pd.read_csv('../data/kaggle-Titanic/train.csv')
+
+# Print generic information about frame
+gen_info(df)
+
+# Process frame
+df2 = process(df)
 
 # Draw correlation matrix
 draw_corr_matrix(df)
