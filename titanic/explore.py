@@ -116,7 +116,7 @@ def anova(df, f:str, test='F'):
     # Create linear model
     lm = ols(f, data=df).fit()
     # Run ANOVA
-    table = sm.stats.anova_lm(lm, test='Chisq', typ=2)
+    table = sm.stats.anova_lm(lm, test=test, typ=2)
     #Return table
     return table
 
