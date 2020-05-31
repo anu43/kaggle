@@ -203,4 +203,5 @@ draw_corr_matrix(df)
 # Run ANOVA-test
 # Define formula
 f = 'Survived ~ Pclass*Sex*Age*SibSp*Parch'
-table = anova(df, f)
+table = anova(df, f, test='Chisq')
+table
