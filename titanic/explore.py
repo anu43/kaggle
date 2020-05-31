@@ -94,7 +94,7 @@ def draw_corr_matrix(df):
     plt.show()
 
 
-def anova(df, f:str):
+def anova(df, f:str, test='F'):
     '''
     Runs the ANOVA test.
 
@@ -104,6 +104,8 @@ def anova(df, f:str):
         Pandas Frame.
     f : str
         Formula.
+    test : string
+        Type of test in ANOVA.
 
     Returns
     -------
