@@ -161,7 +161,6 @@ types = {
         'Survived': 'int8',
         'Pclass': 'category',
         'Sex': 'category',
-        'Age': 'float8',
         'SibSp': 'category',
         'Parch': 'category',
         'Ticket': 'category',
