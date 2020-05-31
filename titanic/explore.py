@@ -179,6 +179,5 @@ draw_corr_matrix(df)
 
 # Run ANOVA-test
 # Define formula
-# f = 'Survived ~ PassengerId*Pclass*Sex*Age*\
-#     SibSp*Parch*Ticket*Fare*Cabin*Embarked'
+f = 'Survived ~ Pclass*Sex*Age*SibSp*Parch*Ticket*Fare*Cabin*Embarked'
 table = anova(df, f)
