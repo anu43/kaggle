@@ -158,9 +158,10 @@ df.fillna(np.nan, inplace=True)
 # Set new types for certain features
 types = {
         'PassengerId': 'category',
-        'Survived': 'int',
+        'Survived': 'int8',
         'Pclass': 'category',
         'Sex': 'category',
+        'Age': 'float8',
         'SibSp': 'category',
         'Parch': 'category',
         'Ticket': 'category',
