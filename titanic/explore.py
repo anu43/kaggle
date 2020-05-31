@@ -189,7 +189,7 @@ def process(df):
 
 
 # Import frame
-df = pd.read_csv('../data/kaggle-Titanic/train.csv')
+df = pd.read_csv('./data/kaggle-Titanic/train.csv')
 
 # Print generic information about frame
 gen_info(df)
