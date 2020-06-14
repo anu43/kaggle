@@ -182,7 +182,7 @@ def process(df):
     df = df.astype(types)
 
     # Drop 'Name' feature
-    df2 = df.drop(['Name', 'Embarked'], axis=1)
+    df2 = df.drop(['Name'], axis=1)
 
     # Return df2 by dropping NaN rows
     return df2.dropna()
