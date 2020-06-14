@@ -273,6 +273,39 @@ def process(df):
     return df2
 
 
+def fill_embarked(df):
+    '''
+    Whole process of the prediction of Embarked feature
+
+    Parameters
+    ----------
+    df: object
+        Pandas Frame
+
+    '''
+    # Prepare dataset for predicting Embarked
+    train_emb = df.drop(['PassengerId', 'Cabin'], axis=1)
+    # Drop NaN (from Age column) rows
+    train_emb.dropna(subset=['Age'], inplace=True)
+    # Prepare column list for converting categorical data to binaries
+    categorical = train_emb.select_dtypes(include='category').columns.drop('Embarked')
+
+    # Create dummy variables for SVM prediction
+    train_emb = convert_categorical2Binary(train_emb, categorical)
+
+    # Split data as X, y
+    X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
+
+    # Predict the missing Embarked values
+    predictions = classification_with_SVM(X_train_emb, y_train_emb, X_test_emb)
+
+    # Add predictions to original frame
+    df.loc[df.Embarked.isnull(), 'Embarked'] = predictions
+
+    # Return frame
+    return df
+
+
 # Import frame
 df = pd.read_csv('./data/kaggle-Titanic/train.csv')
 
@@ -300,21 +333,4 @@ list_missing_features_fraction(df2)  # Lists of features which have missing vals
 # Age [Predicting]
 
 # Embarked [Predicting]
-# Prepare dataset for predicting Embarked
-train_emb = df2.drop(['PassengerId', 'Cabin'], axis=1)
-# Drop NaN (from Age column) rows
-train_emb.dropna(subset=['Age'], inplace=True)
-# Prepare column list for converting categorical data to binaries
-categorical = train_emb.select_dtypes(include='category').columns.drop('Embarked')
-
-# Create dummy variables for SVM prediction
-train_emb = convert_categorical2Binary(train_emb, categorical)
-
-# Split data as X, y
-X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
-
-# Predict the missing Embarked values
-predictions = classification_with_SVM(X_train_emb, y_train_emb, X_test_emb)
-
-# Add predictions to original frame
-df2.loc[df2.Embarked.isnull(), 'Embarked'] = predictions
+df2 = fill_embarked(df2)
