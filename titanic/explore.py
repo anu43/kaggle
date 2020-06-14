@@ -215,3 +215,7 @@ list_missing_features_fraction(df2)  # Lists of features which have missing vals
 # Age [Predicting]
 
 # Embarked [Predicting]
+# Prepare dataset for predicting Embarked
+train_emb = df2.drop(['PassengerId', 'Cabin'], axis=1)
+# Drop NaN (from Age column) rows
+train_emb.dropna(subset=['Age'], inplace=True)
