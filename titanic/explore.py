@@ -205,3 +205,13 @@ draw_corr_matrix(df)
 f = 'Survived ~ Pclass*Sex*Age*SibSp*Parch'
 table = anova(df, f, test='Chisq')
 table
+
+# Plan for filling missing values
+df2.columns
+list_missing_features_fraction(df2)  # Lists of features which have missing vals
+
+# Cabin [Not decided]
+
+# Age [Predicting]
+
+# Embarked [Predicting]
