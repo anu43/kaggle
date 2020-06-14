@@ -315,3 +315,6 @@ X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
 
 # Predict the missing Embarked values
 predictions = classification_with_SVM(X_train_emb, y_train_emb, X_test_emb)
+
+# Add predictions to original frame
+df2.loc[df2.Embarked.isnull(), 'Embarked'] = predictions
