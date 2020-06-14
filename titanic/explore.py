@@ -148,6 +148,43 @@ def convert_categorical2Binary(df):
     pass
 
 
+def split_X_y(df, feature: str):
+    '''
+    Split given frame into X, y by considering missing/non-missing
+
+    Parameters
+    ----------
+    df: object
+        Pandas Frame.
+    feature: str
+        Feature that is going to be y.
+
+    Returns
+    -------
+    X_train: object
+        Pandas Frame.
+    y_train: object
+        Pandas Frame.
+    X_test: object
+        Pandas Frame.
+
+    '''
+    # Set X_test as missing rows
+    X_test = df[df[feature].isnull()]
+    # Get all columns except target
+    X_test = X_test.loc[:, df.columns != feature]
+
+    # Set the difference for X_train and X_test
+    diff = df.index.difference(X_test.index)
+    # Set X_train
+    X_train = df.loc[diff, df.columns != feature]
+    # Set y_train
+    y_train = df.loc[diff, feature]
+
+    # Return X, y
+    return X_train, y_train, X_test
+
+
 def process(df):
     '''
     Process giving frame for further analytical operations
@@ -219,3 +256,6 @@ list_missing_features_fraction(df2)  # Lists of features which have missing vals
 train_emb = df2.drop(['PassengerId', 'Cabin'], axis=1)
 # Drop NaN (from Age column) rows
 train_emb.dropna(subset=['Age'], inplace=True)
+
+# Split data as X, y
+X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
