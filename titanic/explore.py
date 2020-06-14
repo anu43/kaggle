@@ -184,8 +184,8 @@ def process(df):
     # Drop 'Name' feature
     df2 = df.drop(['Name'], axis=1)
 
-    # Return df2 by dropping NaN rows
-    return df2.dropna()
+    # Return df2
+    return df2
 
 
 # Import frame
