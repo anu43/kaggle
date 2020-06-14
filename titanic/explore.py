@@ -145,8 +145,25 @@ def chi_test_with_all_categorical_features(df):
     return results
 
 
-def convert_categorical2Binary(df):
-    pass
+def convert_categorical2Binary(df, columns: list):
+    '''
+    Creates dummy variables as binary to the given column list
+
+    Parameters
+    ----------
+    df: object
+        Pandas Frame.
+    columns: list
+        List of columns that will be converted
+
+    Returns
+    -------
+    df: Pandas Frame
+        Original frame that is concatenated with the dummy variables.
+    '''
+    dummies = pd.get_dummies(df, columns=columns)
+    # Return frame
+    return pd.concat([df.drop(columns, axis=1, inplace=True), dummies], axis=1)
 
 
 def split_X_y(df, feature: str):
@@ -237,7 +254,7 @@ def process(df):
     # Set new types for certain features
     types = {
         'PassengerId': 'category',
-        'Survived': 'int8',
+        'Survived': 'category',
         'Pclass': 'category',
         'Sex': 'category',
         'SibSp': 'category',
@@ -287,6 +304,11 @@ list_missing_features_fraction(df2)  # Lists of features which have missing vals
 train_emb = df2.drop(['PassengerId', 'Cabin'], axis=1)
 # Drop NaN (from Age column) rows
 train_emb.dropna(subset=['Age'], inplace=True)
+# Prepare column list for converting categorical data to binaries
+categorical = train_emb.select_dtypes(include='category').columns.drop('Embarked')
+
+# Create dummy variables for SVM prediction
+train_emb = convert_categorical2Binary(train_emb, categorical)
 
 # Split data as X, y
 X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
