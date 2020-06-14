@@ -3,6 +3,7 @@ from scipy.stats import chi2_contingency
 from statsmodels.formula.api import ols
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
+from sklearn import svm
 import seaborn as sn
 import pandas as pd
 import numpy as np
@@ -185,6 +186,36 @@ def split_X_y(df, feature: str):
     return X_train, y_train, X_test
 
 
+def classification_with_SVM(X_train, y_train, X_test):
+    '''
+    Prediction with SVM
+
+    Parameters
+    ----------
+    X_train: object
+        Pandas Frame.
+    y_train: object
+        Pandas Series.
+    X_test: object
+        Pandas Frame.
+
+    Returns
+    -------
+    predictions: ndarray of shape
+        Returns the log-probabilities of the sample for each class in the model. The columns correspond to the classes in sorted order, as they appear in the attribute classes_
+    '''
+    # Apply SVM
+    model_SVM = svm.SVC()
+    # Fit the model
+    model_SVM.fit(X_train, y_train)
+
+    # Predict the test samples
+    predictions = model_SVM.predict(X_test)
+
+    # Return predictions
+    return predictions
+
+
 def process(df):
     '''
     Process giving frame for further analytical operations
@@ -259,3 +290,6 @@ train_emb.dropna(subset=['Age'], inplace=True)
 
 # Split data as X, y
 X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Embarked')
+
+# Predict the missing Embarked values
+predictions = classification_with_SVM(X_train_emb, y_train_emb, X_test_emb)
