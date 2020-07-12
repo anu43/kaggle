@@ -1,4 +1,5 @@
 # Import libraries
+from sklearn.neighbors import KNeighborsRegressor
 from scipy.stats import chi2_contingency
 from statsmodels.formula.api import ols
 import matplotlib.pyplot as plt
@@ -233,6 +234,32 @@ def classification_with_SVM(X_train, y_train, X_test):
     return predictions
 
 
+def regression_with_KNN(X_train, y_train, X_test):
+    '''
+    Prediction with SVM
+
+    Parameters
+    ----------
+    X_train: object
+        Pandas Frame.
+    y_train: object
+        Pandas Series.
+    X_test: object
+        Pandas Frame.
+
+    '''
+    # Create the model
+    knn_reg = KNeighborsRegressor(n_neighbors=5, n_jobs=-1)
+    # Fit the model
+    knn_reg.fit(X_train, y_train)
+
+    # Predict
+    predictions = knn_reg.predict(X_test)
+
+    # Return predictions
+    return predictions
+
+
 def process(df):
     '''
     Process giving frame for further analytical operations
@@ -306,6 +333,37 @@ def fill_embarked(df):
     return df
 
 
+def fill_age(df):
+    '''
+    Whole process of the prediction of Age feature
+
+    Parameters
+    ----------
+    df: object
+        Pandas Frame
+
+    '''
+    # Prepare dataset for predicting Embarked
+    train_emb = df.drop(['PassengerId', 'Cabin'], axis=1)
+
+    # Prepare column list for converting categorical data to binaries
+    categorical = train_emb.select_dtypes(include='category').columns
+    # Create dummy variables for KNN Regression prediction
+    train_emb = convert_categorical2Binary(train_emb, categorical)
+
+    # Split data as X, y
+    X_train_emb, y_train_emb, X_test_emb = split_X_y(train_emb, 'Age')
+
+    # Predict the missing Embarked values
+    predictions = regression_with_KNN(X_train_emb, y_train_emb, X_test_emb)
+
+    # Add predictions to original frame
+    df.loc[df.Age.isnull(), 'Age'] = predictions
+
+    # Return frame
+    return df
+
+
 # Import frame
 df = pd.read_csv('./data/kaggle-Titanic/train.csv')
 
@@ -330,7 +388,8 @@ list_missing_features_fraction(df2)  # Lists of features which have missing vals
 
 # Cabin [Not decided]
 
-# Age [Predicting]
-
 # Embarked [Predicting]
 df2 = fill_embarked(df2)
+
+# Age [Predicting]
+df2 = fill_age(df2)
