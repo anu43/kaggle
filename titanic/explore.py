@@ -1,4 +1,6 @@
 # Import libraries
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
 from sklearn.neighbors import KNeighborsRegressor
 from scipy.stats import chi2_contingency
 from statsmodels.formula.api import ols
@@ -281,7 +283,7 @@ def process(df):
     # Set new types for certain features
     types = {
         'PassengerId': 'category',
-        'Survived': 'category',
+        # 'Survived': 'category',
         'Pclass': 'category',
         'Sex': 'category',
         'SibSp': 'category',
@@ -393,10 +395,11 @@ df2 = fill_embarked(df2)
 df2 = fill_age(df2)
 
 # Cabin - [Drop]
-df2 = df2.drop(['Drop'], axis=1)
+df2 = df2.drop(['Cabin'], axis=1)
 
 # Feature Engineering
 # 1. Add the surviving rates according to the age as AgeBucket
 df2['AgeBucket'] = df2['Age'] // 15 * 15
 # 2. Add the relative numbers of each person as RelativesOnboard
-df2['RelativesOnboard'] = df2['SibSp'] + df2['Parch']
+df2['RelativesOnboard'] = df2['SibSp'].astype(dtype='int64') + \
+    df2['Parch'].astype(dtype='int64')
