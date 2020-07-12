@@ -386,10 +386,11 @@ table
 df2.columns
 list_missing_features_fraction(df2)  # Lists of features which have missing vals
 
-# Cabin [Not decided]
-
 # Embarked [Predicting]
 df2 = fill_embarked(df2)
 
 # Age [Predicting]
 df2 = fill_age(df2)
+
+# Cabin - [Drop]
+df2 = df2.drop(['Drop'], axis=1)
