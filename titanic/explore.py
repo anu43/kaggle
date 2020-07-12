@@ -394,3 +394,9 @@ df2 = fill_age(df2)
 
 # Cabin - [Drop]
 df2 = df2.drop(['Drop'], axis=1)
+
+# Feature Engineering
+# 1. Add the surviving rates according to the age as AgeBucket
+df2['AgeBucket'] = df2['Age'] // 15 * 15
+# 2. Add the relative numbers of each person as RelativesOnboard
+df2['RelativesOnboard'] = df2['SibSp'] + df2['Parch']
